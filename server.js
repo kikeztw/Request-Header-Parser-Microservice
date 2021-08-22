@@ -26,9 +26,19 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+function getCallerIP(request) {
+  var ip = request.headers['x-forwarded-for'] ||
+      request.connection.remoteAddress ||
+      request.socket.remoteAddress ||
+      request.connection.socket.remoteAddress;
+  ip = ip.split(',')[0];
+  ip = ip.split(':').slice(-1); //in case the ip returned in a format: "::ffff:146.xxx.xxx.xxx"
+  return ip;
+}
+
 app.get("/api/whoami", function (req, res) {
   const headers = req.headers;
-  const ipaddress = req.ip;
+  const ipaddress = getCallerIP(req)?.[0];
   const lenguage = headers['accept-language'];
   const software = headers['user-agent'];
   res.json({
