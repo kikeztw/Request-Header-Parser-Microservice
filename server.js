@@ -39,12 +39,12 @@ function getCallerIP(request) {
 app.get("/api/whoami", function (req, res) {
   const headers = req.headers;
   const ipaddress = getCallerIP(req)?.[0];
-  const lenguage = headers['accept-language'];
+  const language = headers['accept-language'];
   const software = headers['user-agent'];
   res.json({
-    lenguage,
+    ipaddress,
+    language,
     software,
-    ipaddress
   });
 });
 
